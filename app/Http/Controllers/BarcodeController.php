@@ -1,19 +1,16 @@
 <?php
+use App\Models\User;
 
-namespace App\Http\Controllers;
+// Encuentra al usuario por su ID
+$user = User::find(1); // Cambia el ID según sea necesario
 
-use Illuminate\Http\Request;
+// Asigna el rol "Administrador"
+$user->assignRole('Administrador');
 
-class BarcodeController extends Controller
-{
-    public function process(Request $request)
-    {
-        $barcode = $request->input('barcode');
-
-        // Aquí puedes agregar lógica para procesar el código de barras
-        // Por ejemplo, buscar un producto en la base de datos
-
-        
-    return back()->with('success', "Código de barras procesado: {$barcode}");
-    }
+if ($user->hasRole('Administrador')) {
+    // Acción específica para usuarios administradores
+    echo "El usuario es Administrador.";
+} else {
+    echo "El usuario no tiene rol de Administrador.";
 }
+

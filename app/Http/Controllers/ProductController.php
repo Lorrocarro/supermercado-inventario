@@ -7,6 +7,23 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+
+    public function create()
+    {
+    return view('products.create'); // Muestra la vista para crear un producto
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $products = Product::where('name', 'LIKE', "%$query%")
+            ->orWhere('barcode', 'LIKE', "%$query%")
+            ->orWhere('category', 'LIKE', "%$query%")
+            ->get();
+
+        return view('products.index', compact('products'));
+    }
+
     public function destroy(Product $product)
     {
         $product->delete();
@@ -50,12 +67,10 @@ class ProductController extends Controller
     }
 
     public function index()
-    {
-        // Obtener todos los productos desde la base de datos
-        $products = Product::all();
+{
+    $products = Product::paginate(10);
     
-        // Pasar la variable $products a la vista
-        return view('products.index', compact('products'));
-    }
-    
+    return view('products.index', compact('products'));
+}
+
 }
